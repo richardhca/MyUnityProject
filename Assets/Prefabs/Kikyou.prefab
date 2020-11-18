@@ -271,7 +271,11 @@ GameObject:
   - component: {fileID: 4187931068488229022}
   - component: {fileID: 6094644492085005796}
   - component: {fileID: 884355647737877131}
+  - component: {fileID: 5852035272429745993}
   - component: {fileID: 884355647737877130}
+  - component: {fileID: 4216036225368943475}
+  - component: {fileID: 4538757545344406180}
+  - component: {fileID: 7597124951533456710}
   - component: {fileID: 884355647737877129}
   - component: {fileID: 884355647737877128}
   m_Layer: 0
@@ -330,6 +334,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0025, y: 0.0175, z: 0.003}
   m_Center: {x: 0.00025, y: 0.0086, z: 0}
+--- !u!114 &5852035272429745993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884355647737877133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d214715553e4ea64fa3a306b8f36922f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Agility: 5
 --- !u!114 &884355647737877130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +380,45 @@ MonoBehaviour:
   Run: 115
   Restart: 27
   Agility: 5
+--- !u!114 &4216036225368943475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884355647737877133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6919a35df86f83478a07392d9ca926b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freezeMove: 0
+  secondJump: 0
+--- !u!114 &4538757545344406180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884355647737877133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98dbaff29f9d74f4584c3219dec8abe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7597124951533456710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884355647737877133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55459858971c7fb4da13ea9150af745b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freezeRotate: 0
 --- !u!136 &884355647737877129
 CapsuleCollider:
   m_ObjectHideFlags: 0
