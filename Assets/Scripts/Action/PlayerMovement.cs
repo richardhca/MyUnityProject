@@ -6,6 +6,7 @@ using Player.Config;
 
 namespace Player.Action
 {
+    [RequireComponent(typeof(PlayerControl))]
     public class PlayerMovement : MonoBehaviour
     {
         private float targetAngle;
@@ -17,8 +18,8 @@ namespace Player.Action
 
         public void MoveCharacter(float moveSpeed)
         {
-            float radDeg = (GetComponent<PlayerControl>().Player.transform.eulerAngles.y + targetAngle) * Mathf.Deg2Rad;
-            GetComponent<PlayerControl>().Player.transform.position += new Vector3(Mathf.Sin(radDeg) * moveSpeed, 0, Mathf.Cos(radDeg) * moveSpeed);
+            float radDeg = (GetComponent<PlayerStats>().Player.transform.eulerAngles.y + targetAngle) * Mathf.Deg2Rad;
+            GetComponent<PlayerStats>().Player.transform.position += new Vector3(Mathf.Sin(radDeg) * moveSpeed, 0, Mathf.Cos(radDeg) * moveSpeed);
         }
 
         public void RotateCharacter()
@@ -47,4 +48,3 @@ namespace Player.Action
         }
     }
 }
-

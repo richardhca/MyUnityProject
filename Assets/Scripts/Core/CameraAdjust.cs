@@ -6,6 +6,7 @@ using Player.Config;
 
 namespace GameCore.View
 {
+    [RequireComponent(typeof(PlayerControl))]
     public class CameraAdjust : MonoBehaviour
     {
         private Camera mainCamera;
@@ -25,7 +26,7 @@ namespace GameCore.View
                 {
                     ResetCamera();
                     float rotDir = Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) ? -2.5f : 2.5f;
-                    GetComponent<PlayerControl>().Player.transform.eulerAngles += new Vector3(0, rotDir, 0);
+                    GetComponent<PlayerStats>().Player.transform.eulerAngles += new Vector3(0, rotDir, 0);
                     transform.localEulerAngles = new Vector3(0, 0, 0);
                 }
             }
@@ -57,7 +58,7 @@ namespace GameCore.View
 
         public void ResetCamera()
         {
-            GetComponent<PlayerControl>().Player.transform.eulerAngles += transform.localEulerAngles;
+            GetComponent<PlayerStats>().Player.transform.eulerAngles += transform.localEulerAngles;
             transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }

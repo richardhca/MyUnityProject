@@ -66,9 +66,9 @@
     <Compile Include="Assets\Scripts\Action\PlayerAction.cs" />
     <Compile Include="Assets\Scripts\Action\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Arrow.cs" />
+    <Compile Include="Assets\Scripts\Config\PlayerControl.cs" />
+    <Compile Include="Assets\Scripts\Config\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Core\CameraAdjust.cs" />
-    <Compile Include="Assets\Scripts\PlayerConfig\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\PlayerConfig\PlayerStats.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/richa/wkspaces/MyGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

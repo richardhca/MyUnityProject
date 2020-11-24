@@ -7,11 +7,12 @@ using Player.Config;
 
 namespace Player.Action
 {
+    [RequireComponent(typeof(PlayerControl))]
     public class PlayerAction : MonoBehaviour
     {
-        public Animator PlayerAnime;
-        public Animator WeaponAnime;
-        public ArrayList ActionQueue;
+        private Animator playerAnime;
+        private Animator weaponAnime;
+        private List<string> ActionQueue;
         //private RigidbodyConstraints originalConstraints;
         private bool freezeMove;
         private bool secondJump;
@@ -21,16 +22,16 @@ namespace Player.Action
 
         void Start()
         {
-            PlayerAnime = GetComponent<Animator>();
-            WeaponAnime = GetComponent<PlayerControl>().Weapon.GetComponent<Animator>();
-            ActionQueue = new ArrayList();
+            playerAnime = GetComponent<Animator>();
+            weaponAnime = GetComponent<PlayerStats>().Weapon.GetComponent<Animator>();
+            ActionQueue = new List<string>();
             //originalConstraints = player.GetComponent<Rigidbody>().constraints;
             freezeMove = false;
             secondJump = false;
             landed = true;
             arrowSpawned = false;
             spawnArrow = null;
-            PlayerAnime.PlayInFixedTime("103_idle");
+            playerAnime.PlayInFixedTime("Idle");
         }
 
         private void OnTriggerEnter(Collider other)
@@ -39,85 +40,121 @@ namespace Player.Action
                 landed = true;
         }
 
+        public void QueueAttack1Action()
+        {
+            AnimatorStateInfo currentAnime = playerAnime.GetCurrentAnimatorStateInfo(0);
+            if (ActionQueue.Count == 0 || currentAnime.IsName("Attack_1") || currentAnime.IsName("Attack_2"))
+            {
+                if (ActionQueue.Count == 0)
+                    ActionQueue.Add("Attack_1");
+                else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
+                    ActionQueue.Add("Attack_2");
+                else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
+                    ActionQueue.Add("Attack_3");
+            }
+        }
+
+        public void QueueAttack2Action()
+        {
+            if (ActionQueue.Count == 0)
+                ActionQueue.Add("LightAtk");
+        }
+
+        public void QueueJumpAction()
+        {
+            if (ActionQueue.Count == 0)
+            {
+                ActionQueue.Add("Jump");
+                ActionQueue.Add("Glide");
+                ActionQueue.Add("Land");
+            }
+            else
+            {
+                if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Glide"))
+                    PerformSecondJump();
+            }
+        }
+
         public void PerformAction(string animeName)
         {
             if (ActionQueue.Count != 0) // Jump, Attack
             {
-                string currentAnime = PlayerAnime.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-                if (!currentAnime.Equals(ActionQueue[0]))
+                if (!playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                 {
-                    PlayerAnime.PlayInFixedTime(ActionQueue[0].ToString());
+                    playerAnime.PlayInFixedTime(ActionQueue[0]);
                     switch (ActionQueue[0].ToString())
                     {
-                        case "103_jump3": // Jump
-                            GetComponent<PlayerControl>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
+                        case "Jump": // Jump
+                            GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
                             landed = false;
                             secondJump = true;
                             break;
-                        case "103_landing2": // Land
+                        case "Land": // Land
                             freezeMove = true;
                             GetComponent<CameraAdjust>().freezeRotate = true;
                             break;
-                        case "103_normalatk4":
-                            WeaponAnime.PlayInFixedTime("10003_attack_2b");
+                        case "Attack_1":
+                            weaponAnime.PlayInFixedTime("Attack_1");
                             freezeMove = true;
                             break;
-                        case "10003_attack":
-                            WeaponAnime.PlayInFixedTime("10003_attack_b");
+                        case "Attack_2":
+                            weaponAnime.PlayInFixedTime("Attack_2");
                             freezeMove = true;
                             break;
-                        case "103_fastshot":
-                            WeaponAnime.PlayInFixedTime("10003_fastshot_b");
+                        case "Attack_3":
+                            weaponAnime.PlayInFixedTime("Attack_3");
                             freezeMove = true;
                             break;
-                        case "103_common":
+                        case "LightAtk":
                             freezeMove = true;
                             GetComponent<CameraAdjust>().freezeRotate = true;
                             break;
                     }
                 }
-                else if (currentAnime.Equals("103_jump3") || currentAnime.Equals("103_glide3"))
+                else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Glide"))
                 {
-                    if (currentAnime.Equals("103_jump3") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                         ActionQueue.RemoveAt(0);
 
                     if (landed)
                     {
-                        while (!ActionQueue[0].ToString().Equals("103_landing2"))
+                        while (!ActionQueue[0].ToString().Equals("Land"))
                             ActionQueue.RemoveAt(0);
                     }
                 }
-                else if (currentAnime.Equals("103_normalatk4") || currentAnime.Equals("10003_attack") || currentAnime.Equals("103_fastshot"))
+                else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3"))
                 {
                     //player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                    if (currentAnime.Equals("103_normalatk4") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f ||
-                        currentAnime.Equals("10003_attack") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f ||
-                        currentAnime.Equals("103_fastshot") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f ||
+                        playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f ||
+                        playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f)
                     {
                         if (!arrowSpawned)
                         {
                             arrowSpawned = true;
                             GetComponent<CameraAdjust>().freezeRotate = true;
-                            Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerControl>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
-                            spawnArrow = Instantiate(GetComponent<PlayerControl>().Arrow, GetComponent<PlayerControl>().ArrowSpawn.position, angle);
+                            Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
+                            spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
                             spawnArrow.transform.localPosition += spawnArrow.transform.forward * 1.2f;
-                            if (currentAnime.Equals("103_normalatk4"))
+                            if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1"))
                                 spawnArrow.transform.localPosition += spawnArrow.transform.up * 0.1f;
                             else
                                 spawnArrow.transform.localPosition += spawnArrow.transform.up * 0.15f;
                         }
                         else
                         {
-                            if (currentAnime.Equals("103_normalatk4") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.50f ||
-                                currentAnime.Equals("10003_attack") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.60f ||
-                                currentAnime.Equals("103_fastshot") && PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f)
+                            if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.50f ||
+                                playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.60f ||
+                                playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f)
+                            {
                                 if (spawnArrow != null)
                                     spawnArrow.GetComponent<Rigidbody>().velocity = spawnArrow.transform.forward * 50.0f;
+                            }
                         }
                     }
-                    if (PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                     {
-                        while (ActionQueue.Count > 0 && currentAnime.Equals(ActionQueue[0]))
+                        while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
                         freezeMove = false;
                         GetComponent<CameraAdjust>().freezeRotate = false;
@@ -126,7 +163,7 @@ namespace Player.Action
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
                 }
-                else if (PlayerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                else if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                 {
                     ActionQueue.RemoveAt(0);
                     freezeMove = false;
@@ -135,27 +172,27 @@ namespace Player.Action
             }
             else
             {
-                PlayerAnime.PlayInFixedTime(animeName);
-                WeaponAnime.PlayInFixedTime("10003_idle");
+                playerAnime.PlayInFixedTime(animeName);
+                weaponAnime.PlayInFixedTime("Idle");
             }
 
             if (!freezeMove)
             {
-                if (!animeName.Equals("103_idle"))
+                if (!animeName.Equals("Idle"))
                 {
-                    float moveSpeed = (Input.GetKey(GetComponent<PlayerControl>().Run)) ? GetComponent<PlayerStats>().AGI * 1.5f / 20.0f : GetComponent<PlayerStats>().AGI / 20.0f;
+                    float moveSpeed = (Input.GetKey(GetComponent<PlayerControl>().Run)) ? GetComponent<PlayerStats>().Speed * 1.5f : GetComponent<PlayerStats>().Speed;
                     GetComponent<PlayerMovement>().RotateCharacter();
                     GetComponent<PlayerMovement>().MoveCharacter(moveSpeed);
                 }
             }
         }
 
-        public void PerformSecondJump()
+        private void PerformSecondJump()
         {
             if (secondJump)
             {
                 secondJump = false;
-                GetComponent<PlayerControl>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
+                GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
             }
         }
     }
