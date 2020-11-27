@@ -6,9 +6,12 @@ using Player.Config;
 
 namespace GameCore.View
 {
+    [RequireComponent(typeof(PlayerStats))]
     [RequireComponent(typeof(PlayerControl))]
     public class CameraAdjust : MonoBehaviour
     {
+        [SerializeField] GameObject cameraHolder;
+
         private Camera mainCamera;
         public bool freezeRotate;
 
@@ -18,16 +21,19 @@ namespace GameCore.View
             freezeRotate = false;
         }
 
+        void Update()
+        {
+            cameraHolder.transform.position = GetComponent<PlayerStats>().Player.transform.position;
+        }
+
         public void AdjustCamera()
         {
             if (Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) || Input.GetKey(GetComponent<PlayerControl>().CameraRIGHT))
             {
                 if (!freezeRotate)
                 {
-                    ResetCamera();
                     float rotDir = Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) ? -2.5f : 2.5f;
-                    GetComponent<PlayerStats>().Player.transform.eulerAngles += new Vector3(0, rotDir, 0);
-                    transform.localEulerAngles = new Vector3(0, 0, 0);
+                    cameraHolder.transform.eulerAngles += new Vector3(0, rotDir, 0);
                 }
             }
 
@@ -56,10 +62,16 @@ namespace GameCore.View
             }
         }
 
+        public void AlignWithCamera()
+        {
+            GetComponent<PlayerStats>().Player.transform.eulerAngles = cameraHolder.transform.eulerAngles;
+        }
+
         public void ResetCamera()
         {
             GetComponent<PlayerStats>().Player.transform.eulerAngles += transform.localEulerAngles;
             transform.localEulerAngles = new Vector3(0, 0, 0);
+            cameraHolder.transform.eulerAngles = GetComponent<PlayerStats>().Player.transform.eulerAngles;
         }
     }
 }

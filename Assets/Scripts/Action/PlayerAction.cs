@@ -31,7 +31,6 @@ namespace Player.Action
             landed = true;
             arrowSpawned = false;
             spawnArrow = null;
-            playerAnime.PlayInFixedTime("Idle");
         }
 
         private void OnTriggerEnter(Collider other)
@@ -152,12 +151,11 @@ namespace Player.Action
                             }
                         }
                     }
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
                     {
                         while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
-                        freezeMove = false;
-                        GetComponent<CameraAdjust>().freezeRotate = false;
+                        
                         arrowSpawned = false;
                         spawnArrow = null;
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
@@ -166,13 +164,39 @@ namespace Player.Action
                 else if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                 {
                     ActionQueue.RemoveAt(0);
-                    freezeMove = false;
-                    GetComponent<CameraAdjust>().freezeRotate = false;
+                    if (ActionQueue.Count == 0)
+                        playerAnime.PlayInFixedTime(animeName);
                 }
             }
             else
             {
-                playerAnime.PlayInFixedTime(animeName);
+                freezeMove = false;
+                GetComponent<CameraAdjust>().freezeRotate = false;
+
+                if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName(animeName))
+                    ResetAllAnimeTrigger();
+
+                if (animeName.Equals("Idle"))
+                {
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Walk") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                        playerAnime.SetTrigger("StopMoving");
+                    else
+                        playerAnime.PlayInFixedTime("Idle");
+                }
+                else if (animeName.Equals("Walk"))
+                {
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                        playerAnime.SetTrigger("IdleToWalk");
+                    else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                        playerAnime.SetTrigger("RunToWalk");
+                }
+                else if (animeName.Equals("Run"))
+                {
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                        playerAnime.SetTrigger("IdleToRun");
+                    else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                        playerAnime.SetTrigger("WalkToRun");
+                }
                 weaponAnime.PlayInFixedTime("Idle");
             }
 
@@ -181,6 +205,7 @@ namespace Player.Action
                 if (!animeName.Equals("Idle"))
                 {
                     float moveSpeed = (Input.GetKey(GetComponent<PlayerControl>().Run)) ? GetComponent<PlayerStats>().Speed * 1.5f : GetComponent<PlayerStats>().Speed;
+                    GetComponent<CameraAdjust>().AlignWithCamera();
                     GetComponent<PlayerMovement>().RotateCharacter();
                     GetComponent<PlayerMovement>().MoveCharacter(moveSpeed);
                 }
@@ -194,6 +219,15 @@ namespace Player.Action
                 secondJump = false;
                 GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
             }
+        }
+
+        private void ResetAllAnimeTrigger()
+        {
+            playerAnime.ResetTrigger("StopMoving");
+            playerAnime.ResetTrigger("IdleToWalk");
+            playerAnime.ResetTrigger("IdleToRun");
+            playerAnime.ResetTrigger("WalkToRun");
+            playerAnime.ResetTrigger("RunToWalk");
         }
     }
 }
