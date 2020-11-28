@@ -63,9 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Action\MonsterAction.cs" />
     <Compile Include="Assets\Scripts\Action\PlayerAction.cs" />
     <Compile Include="Assets\Scripts\Action\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Arrow.cs" />
+    <Compile Include="Assets\Scripts\Config\MonsterStats.cs" />
     <Compile Include="Assets\Scripts\Config\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Config\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Core\CameraAdjust.cs" />

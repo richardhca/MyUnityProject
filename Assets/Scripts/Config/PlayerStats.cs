@@ -52,7 +52,7 @@ namespace Player.Config
         {
             return HitPoint == 0;
         }
-    }
-
-    public enum CombatType {Melee, Range};
+    }  
 }
+
+public enum CombatType {Melee, Range};
