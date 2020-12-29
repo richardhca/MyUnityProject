@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 using Monster.Config;
 using Player.Config;
+using Player.Action;
 
 namespace Monster.Action
 {
@@ -27,13 +28,16 @@ namespace Monster.Action
         // Update is called once per frame
         void Update()
         {
-            if (actionTime > GetComponent<MonsterStats>().ActionInterval)
+            if (GetComponent<MonsterStats>().IsDead()) return;
+
+            if (!player.transform.GetChild(0).GetComponent<PlayerStats>().IsDead() && actionTime > GetComponent<MonsterStats>().ActionInterval)
             {
                 Vector3 playerPosition = player.transform.position;
                 if (Vector3.Distance(transform.position, playerPosition) > GetComponent<MonsterStats>().AttackRange)
                 {
-                    if (monsterAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                    if (monsterAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack") || isUnderAttack())
                     {
+                        stopMove();
                         actionTime = 0;
                         return;
                     }
@@ -42,6 +46,8 @@ namespace Monster.Action
                 }
                 else
                 {
+                    stopMove();
+                    transform.LookAt(playerPosition);
                     performAction("Attack");
                 }
             }
@@ -66,16 +72,57 @@ namespace Monster.Action
             switch (animeName)
             {
                 case "Idle":
-                    monsterAnime.SetTrigger("StopAction");
+                    monsterAnime.SetTrigger("Idle");
                     monsterAnime.ResetTrigger("Attack");
-                    monsterAnime.ResetTrigger("Move");
+                    monsterAnime.ResetTrigger("Move");  
                     break;
                 case "Move":
                     monsterAnime.SetTrigger("Move");
+                    monsterAnime.ResetTrigger("Idle");
+                    monsterAnime.ResetTrigger("Attack");
                     break;
                 case "Attack":
                     monsterAnime.SetTrigger("Attack");
+                    monsterAnime.ResetTrigger("Move");
+                    monsterAnime.ResetTrigger("Idle");
                     break;
+            }
+        }
+
+        private void stopMove()
+        {
+            GetComponent<NavMeshAgent>().destination = transform.position;
+            GetComponent<NavMeshAgent>().velocity = Vector3.zero;
+            performAction("Idle");
+        }
+
+        public void GetHit(int damage)
+        {
+            if (GetComponent<MonsterStats>().IsDead()) return;
+
+            stopMove();
+            GetComponent<MonsterStats>().TakeDamage(damage);
+            if (GetComponent<MonsterStats>().IsDead())
+            {
+                monsterAnime.SetTrigger("Die");
+                transform.GetComponent<Collider>().enabled = false;
+            }
+            else
+            {
+                monsterAnime.SetTrigger("Hit");
+            }
+        }
+
+        private bool isUnderAttack()
+        {
+            return monsterAnime.GetCurrentAnimatorStateInfo(0).IsName("Hit") || monsterAnime.GetCurrentAnimatorStateInfo(0).IsName("HitReturn");
+        }
+
+        void HitCheck() // This function is used by animation event
+        {
+            if (Vector3.Distance(transform.position, player.transform.position) <= GetComponent<MonsterStats>().AttackRange)
+            {
+                player.transform.GetChild(0).GetComponent<PlayerAction>().GetHit(GetComponent<MonsterStats>().Attack);
             }
         }
     }

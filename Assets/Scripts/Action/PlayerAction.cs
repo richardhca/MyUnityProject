@@ -48,15 +48,15 @@ namespace Player.Action
                     ActionQueue.Add("Attack_1");
                 else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
                     ActionQueue.Add("Attack_2");
-                else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
+                else if ((currentAnime.IsName("Attack_1") && ActionQueue.Count == 2) || (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1))
                     ActionQueue.Add("Attack_3");
             }
         }
 
         public void QueueAttack2Action()
         {
-            if (ActionQueue.Count == 0)
-                ActionQueue.Add("LightAtk");
+            //if (ActionQueue.Count == 0)
+            //    ActionQueue.Add("LightAtk");
         }
 
         public void QueueJumpAction()
@@ -76,11 +76,18 @@ namespace Player.Action
 
         public void PerformAction(string animeName)
         {
+            if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+            {
+                ActionQueue.Clear();
+                return;
+            }
+
             if (ActionQueue.Count != 0) // Jump, Attack
             {
                 if (!playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                 {
-                    playerAnime.PlayInFixedTime(ActionQueue[0]);
+                    ResetActionTriggers();
+                    playerAnime.SetTrigger(ActionQueue[0]);
                     switch (ActionQueue[0].ToString())
                     {
                         case "Jump": // Jump
@@ -104,15 +111,15 @@ namespace Player.Action
                             weaponAnime.PlayInFixedTime("Attack_3");
                             freezeMove = true;
                             break;
-                        case "LightAtk":
+                        /*case "LightAtk":
                             freezeMove = true;
                             GetComponent<CameraAdjust>().freezeRotate = true;
-                            break;
+                            break;*/
                     }
                 }
                 else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Glide"))
                 {
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
                         ActionQueue.RemoveAt(0);
 
                     if (landed)
@@ -151,8 +158,9 @@ namespace Player.Action
                             }
                         }
                     }
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
+                    if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                     {
+                        playerAnime.ResetTrigger(ActionQueue[0]);
                         while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
                         
@@ -161,46 +169,41 @@ namespace Player.Action
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
                 }
-                else if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                else if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
                 {
+                    playerAnime.ResetTrigger(ActionQueue[0]);
                     ActionQueue.RemoveAt(0);
                     if (ActionQueue.Count == 0)
                         playerAnime.PlayInFixedTime(animeName);
                 }
             }
-            else
+            else // Perform Player Movement anime
             {
                 freezeMove = false;
                 GetComponent<CameraAdjust>().freezeRotate = false;
 
-                if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName(animeName))
-                    ResetAllAnimeTrigger();
-
                 if (animeName.Equals("Idle"))
                 {
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Walk") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-                        playerAnime.SetTrigger("StopMoving");
-                    else
-                        playerAnime.PlayInFixedTime("Idle");
+                    playerAnime.SetTrigger("Idle");
+                    playerAnime.ResetTrigger("Walk");
+                    playerAnime.ResetTrigger("Run");
                 }
                 else if (animeName.Equals("Walk"))
                 {
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                        playerAnime.SetTrigger("IdleToWalk");
-                    else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-                        playerAnime.SetTrigger("RunToWalk");
+                    playerAnime.SetTrigger("Walk");
+                    playerAnime.ResetTrigger("Idle");
+                    playerAnime.ResetTrigger("Run");
                 }
                 else if (animeName.Equals("Run"))
                 {
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                        playerAnime.SetTrigger("IdleToRun");
-                    else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
-                        playerAnime.SetTrigger("WalkToRun");
+                    playerAnime.SetTrigger("Run");
+                    playerAnime.ResetTrigger("Idle");
+                    playerAnime.ResetTrigger("Walk");
                 }
                 weaponAnime.PlayInFixedTime("Idle");
             }
 
-            if (!freezeMove)
+            if (!freezeMove) // Move Player
             {
                 if (!animeName.Equals("Idle"))
                 {
@@ -221,13 +224,30 @@ namespace Player.Action
             }
         }
 
-        private void ResetAllAnimeTrigger()
+        private void ResetActionTriggers()
         {
-            playerAnime.ResetTrigger("StopMoving");
-            playerAnime.ResetTrigger("IdleToWalk");
-            playerAnime.ResetTrigger("IdleToRun");
-            playerAnime.ResetTrigger("WalkToRun");
-            playerAnime.ResetTrigger("RunToWalk");
+            playerAnime.ResetTrigger("Idle");
+            playerAnime.ResetTrigger("Walk");
+            playerAnime.ResetTrigger("Run");
+            playerAnime.ResetTrigger("Jump");
+            playerAnime.ResetTrigger("Glide");
+            playerAnime.ResetTrigger("Land");
+            playerAnime.ResetTrigger("Attack_1");
+            playerAnime.ResetTrigger("Attack_2");
+            playerAnime.ResetTrigger("Attack_3");
+            playerAnime.ResetTrigger("Hit");
+        }
+
+        public void GetHit(int damage)
+        {
+            if (GetComponent<PlayerStats>().IsDead()) return;
+
+            ResetActionTriggers();
+            GetComponent<PlayerStats>().TakeDamage(damage);
+            if (GetComponent<PlayerStats>().IsDead())
+                playerAnime.SetTrigger("Die");
+            else
+                playerAnime.SetTrigger("Hit");
         }
     }
 }
