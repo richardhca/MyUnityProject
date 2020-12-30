@@ -43,6 +43,11 @@ namespace Monster.Config
             GetComponent<NavMeshAgent>().speed = Agility;
         }
 
+        public int MaxHealth()
+        {
+            return HP[i];
+        }
+
         public void TakeDamage(int damage)
         {
             HitPoint = Mathf.Max(HitPoint - damage, 0);

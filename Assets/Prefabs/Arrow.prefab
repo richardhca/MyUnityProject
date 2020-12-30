@@ -5023,7 +5023,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.1
+    scalar: 0.2
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -5083,7 +5083,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.75
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5627,7 +5627,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 2
     angle: 32
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -9776,7 +9776,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.1
+    scalar: 0.2
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -9836,7 +9836,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.75
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -10380,7 +10380,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 2
     angle: 32
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}

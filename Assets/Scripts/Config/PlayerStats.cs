@@ -43,6 +43,11 @@ namespace Player.Config
             Agility = AGI[i] / 20.0f;
         }
 
+        public int MaxHealth()
+        {
+            return HP[i];
+        }
+
         public void TakeDamage(int damage)
         {
             HitPoint = Mathf.Max(HitPoint - damage, 0);
