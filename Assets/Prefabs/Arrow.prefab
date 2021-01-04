@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7397057247856942059}
   - component: {fileID: 8693871566409025915}
   m_Layer: 0
-  m_Name: weapon_16008_0
+  m_Name: ArrowObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,7 +133,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.5
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -4968,6 +4968,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b6898af4501784ca096dd4a88f876a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowObject: {fileID: 4604856972387703262}
+  projectileEffect: {fileID: 2871388746822624851}
+  particleEffects:
+  - {fileID: 3043007225267446461}
+  - {fileID: 3230198341484659356}
 --- !u!1 &7488838606477606357
 GameObject:
   m_ObjectHideFlags: 0
@@ -5023,7 +5028,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.2
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -9776,7 +9781,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.2
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2

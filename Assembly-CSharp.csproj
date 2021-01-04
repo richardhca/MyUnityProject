@@ -70,7 +70,11 @@
     <Compile Include="Assets\Scripts\Config\MonsterStats.cs" />
     <Compile Include="Assets\Scripts\Config\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Config\PlayerStats.cs" />
+    <Compile Include="Assets\Scripts\Core\AllyHPBar.cs" />
     <Compile Include="Assets\Scripts\Core\CameraAdjust.cs" />
+    <Compile Include="Assets\Scripts\Core\HostileHPBar.cs" />
+    <Compile Include="Assets\Scripts\Core\HPBarWidgets.cs" />
+    <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/richa/wkspaces/MyGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -91,6 +95,9 @@
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/richa/wkspaces/MyGame/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>C:/Users/richa/wkspaces/MyGame/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/richa/wkspaces/MyGame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
