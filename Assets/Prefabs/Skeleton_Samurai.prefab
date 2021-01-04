@@ -326,7 +326,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 803121111536279038}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.05
+  m_Radius: 0.015
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1818,7 +1818,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 290ba6c460acaca4a92b15a2006db68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BillboardX: 1
-  BillboardY: 1
-  BillboardZ: 1
   OffsetToCamera: 0

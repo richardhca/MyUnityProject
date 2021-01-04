@@ -33,7 +33,7 @@ namespace Monster.Config
         
         void Start()
         {
-            i = Array.IndexOf(Name, transform.name);
+            i = 0; // Array.IndexOf(Name, transform.name);
             attackType = ATKType[i];
             HitPoint = HP[i];
             Strength = STR[i];

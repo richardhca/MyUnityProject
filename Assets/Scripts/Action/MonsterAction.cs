@@ -91,7 +91,7 @@ namespace Monster.Action
 
         private void stopMove()
         {
-            GetComponent<NavMeshAgent>().destination = transform.position;
+            GetComponent<NavMeshAgent>().ResetPath();
             GetComponent<NavMeshAgent>().velocity = Vector3.zero;
             performAction("Idle");
         }

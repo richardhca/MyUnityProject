@@ -25,6 +25,7 @@ public class Arrow : MonoBehaviour
         if (Vector3.Distance(transform.position, initialPosition) > 100.0f)
             GetComponent<Rigidbody>().useGravity = true;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.name.Equals("Terrain"))
