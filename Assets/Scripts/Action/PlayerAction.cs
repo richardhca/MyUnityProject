@@ -141,11 +141,7 @@ namespace Player.Action
                             GetComponent<CameraAdjust>().freezeRotate = true;
                             Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
                             spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
-                            spawnArrow.transform.localPosition += spawnArrow.transform.forward * 1.2f;
-                            if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1"))
-                                spawnArrow.transform.localPosition += spawnArrow.transform.up * 0.1f;
-                            else
-                                spawnArrow.transform.localPosition += spawnArrow.transform.up * 0.15f;
+                            spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
                         }
                         else
                         {

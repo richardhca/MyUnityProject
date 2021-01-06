@@ -11,28 +11,38 @@ public class Arrow : MonoBehaviour
     [SerializeField] private List<ParticleSystem> particleEffects;
 
     private Vector3 initialPosition;
+    private float spawnTime;
 
     private void Start()
     {
         toggleArrowEffect(false);
         initialPosition = transform.position;
+        spawnTime = 0.0f;
     }
 
     private void LateUpdate()
     {
         if (GetComponent<Rigidbody>().velocity != Vector3.zero)
             toggleArrowEffect(true);
-        if (Vector3.Distance(transform.position, initialPosition) > 100.0f)
+
+        spawnTime += Time.deltaTime;
+        if (Vector3.Distance(transform.position, initialPosition) > 100.0f || (GetComponent<Rigidbody>().velocity == Vector3.zero && spawnTime >= 1.0f))
             GetComponent<Rigidbody>().useGravity = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.name.Equals("Terrain"))
+        if (other.transform.parent != null)
+        {
+            if (other.transform.parent.gameObject == GameObject.FindWithTag("Player")) return;
+            if (other.transform.parent.name.Equals("Enemies"))
+                other.GetComponent<MonsterAction>().GetHit(40); // Currently magic number for test, change value to player's attack later
+        }
+        /*if (!other.name.Equals("Terrain"))
         {
             if (other.transform.parent != null && other.transform.parent.name.Equals("Enemies"))
                 other.GetComponent<MonsterAction>().GetHit(40); // Currently magic number for test, change value to player's attack later
-        }
+        }*/
         StartCoroutine(destroyArrow());
     }
     
