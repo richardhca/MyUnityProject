@@ -48,7 +48,8 @@ namespace Player.Action
                     ActionQueue.Add("Attack_1");
                 else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
                     ActionQueue.Add("Attack_2");
-                else if ((currentAnime.IsName("Attack_1") && ActionQueue.Count == 2) || (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1))
+                //else if ((currentAnime.IsName("Attack_1") && ActionQueue.Count == 2) || (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1))
+                else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
                     ActionQueue.Add("Attack_3");
             }
         }
@@ -97,7 +98,7 @@ namespace Player.Action
                             break;
                         case "Land": // Land
                             freezeMove = true;
-                            GetComponent<CameraAdjust>().freezeRotate = true;
+                            //GetComponent<CameraAdjust>().freezeRotate = true;
                             break;
                         case "Attack_1":
                             weaponAnime.PlayInFixedTime("Attack_1");
@@ -138,7 +139,6 @@ namespace Player.Action
                         if (!arrowSpawned)
                         {
                             arrowSpawned = true;
-                            GetComponent<CameraAdjust>().freezeRotate = true;
                             Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
                             spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
                             spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
@@ -175,8 +175,8 @@ namespace Player.Action
             }
             else // Perform Player Movement anime
             {
-                freezeMove = false;
-                GetComponent<CameraAdjust>().freezeRotate = false;
+                if (ActionQueue.Count == 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(animeName))
+                    freezeMove = false;
 
                 if (animeName.Equals("Idle"))
                 {

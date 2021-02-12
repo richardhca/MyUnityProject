@@ -34,6 +34,8 @@ namespace Player.Config
         public int Attack => Strength;
         public float Speed => Agility;
 
+        public float energy;
+
         void Start()
         {
             i = Array.IndexOf(Name, transform.name);
@@ -41,11 +43,26 @@ namespace Player.Config
             HitPoint = HP[i];
             Strength = STR[i];
             Agility = AGI[i] / 20.0f;
+            energy = 100.0f;
         }
 
         public int MaxHealth()
         {
             return HP[i];
+        }
+
+        public bool ConsumeEnergy()
+        {
+            if (energy <= 0)
+                return false;
+
+            energy -= 1.5f;
+            return true;
+        }
+
+        public void RestoreEnergy()
+        {
+            energy += 2.0f;
         }
 
         public void TakeDamage(int damage)
