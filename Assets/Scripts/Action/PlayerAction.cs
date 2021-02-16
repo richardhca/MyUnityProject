@@ -183,18 +183,28 @@ namespace Player.Action
                     playerAnime.SetTrigger("Idle");
                     playerAnime.ResetTrigger("Walk");
                     playerAnime.ResetTrigger("Run");
+                    GetComponent<PlayerStats>().RestoreStamina();
                 }
                 else if (animeName.Equals("Walk"))
                 {
                     playerAnime.SetTrigger("Walk");
                     playerAnime.ResetTrigger("Idle");
                     playerAnime.ResetTrigger("Run");
+                    GetComponent<PlayerStats>().RestoreStamina();
                 }
                 else if (animeName.Equals("Run"))
                 {
-                    playerAnime.SetTrigger("Run");
+                    if (GetComponent<PlayerStats>().ConsumeStamina())
+                    {
+                        playerAnime.SetTrigger("Run");
+                        playerAnime.ResetTrigger("Walk");
+                    }
+                    else
+                    {
+                        playerAnime.SetTrigger("Walk");
+                        playerAnime.ResetTrigger("Run");
+                    }
                     playerAnime.ResetTrigger("Idle");
-                    playerAnime.ResetTrigger("Walk");
                 }
                 weaponAnime.PlayInFixedTime("Idle");
             }
@@ -203,7 +213,7 @@ namespace Player.Action
             {
                 if (!animeName.Equals("Idle"))
                 {
-                    float moveSpeed = (Input.GetKey(GetComponent<PlayerControl>().Run)) ? GetComponent<PlayerStats>().Speed * 1.5f : GetComponent<PlayerStats>().Speed;
+                    float moveSpeed = (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Run")) ? GetComponent<PlayerStats>().Speed * 1.5f : GetComponent<PlayerStats>().Speed;
                     GetComponent<CameraAdjust>().AlignWithCamera();
                     GetComponent<PlayerMovement>().RotateCharacter();
                     GetComponent<PlayerMovement>().MoveCharacter(moveSpeed);

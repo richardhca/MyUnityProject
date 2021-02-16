@@ -11,6 +11,12 @@ TextureImporter:
   - first:
       213: 411977878670006079
     second: HealthBar_Empty
+  - first:
+      213: 1583465785936283777
+    second: EnergyBar
+  - first:
+      213: 1999888656430529056
+    second: EnergyBar_Empty
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -144,7 +150,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 344
+        y: 346
         width: 512
         height: 55
       alignment: 0
@@ -177,6 +183,48 @@ TextureImporter:
       bones: []
       spriteID: 64ce0fab640a72449bbc05f86e639a62
       internalID: 411977878670006079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnergyBar
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 261
+        width: 512
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e8c32765c73e2440935a0bbb268d739
+      internalID: 1583465785936283777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnergyBar_Empty
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 231
+        width: 512
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d63a59e91621864da2deda180840040
+      internalID: 1999888656430529056
       vertices: []
       indices: 
       edges: []

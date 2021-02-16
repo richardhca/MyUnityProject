@@ -23,6 +23,7 @@ namespace Player.Config
         private int HitPoint;
         private int Strength;
         private float Agility;
+        private float Stamina;
 
         public GameObject Player => player;
         public GameObject Weapon => weapon;
@@ -33,8 +34,7 @@ namespace Player.Config
         public int Health => HitPoint;
         public int Attack => Strength;
         public float Speed => Agility;
-
-        public float energy;
+        public float Energy => Stamina;
 
         void Start()
         {
@@ -43,7 +43,7 @@ namespace Player.Config
             HitPoint = HP[i];
             Strength = STR[i];
             Agility = AGI[i] / 20.0f;
-            energy = 100.0f;
+            Stamina = 100.0f;
         }
 
         public int MaxHealth()
@@ -51,18 +51,18 @@ namespace Player.Config
             return HP[i];
         }
 
-        public bool ConsumeEnergy()
+        public bool ConsumeStamina()
         {
-            if (energy <= 0)
+            if (Stamina <= 0)
                 return false;
 
-            energy -= 1.5f;
+            Stamina -= 0.5f;
             return true;
         }
 
-        public void RestoreEnergy()
+        public void RestoreStamina()
         {
-            energy += 2.0f;
+            Stamina = Mathf.Min(Stamina+0.75f, 100.0f);
         }
 
         public void TakeDamage(int damage)
