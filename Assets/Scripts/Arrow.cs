@@ -11,22 +11,15 @@ public class Arrow : MonoBehaviour
     [SerializeField] private List<ParticleSystem> particleEffects;
 
     private Vector3 initialPosition;
-    private float spawnTime;
 
     private void Start()
     {
-        toggleArrowEffect(false);
         initialPosition = transform.position;
-        spawnTime = 0.0f;
     }
 
     private void LateUpdate()
     {
-        if (GetComponent<Rigidbody>().velocity != Vector3.zero)
-            toggleArrowEffect(true);
-
-        spawnTime += Time.deltaTime;
-        if (Vector3.Distance(transform.position, initialPosition) > 100.0f || (GetComponent<Rigidbody>().velocity == Vector3.zero && spawnTime >= 1.0f))
+        if (Vector3.Distance(transform.position, initialPosition) > 100.0f)
             GetComponent<Rigidbody>().useGravity = true;
     }
 
@@ -46,22 +39,19 @@ public class Arrow : MonoBehaviour
         StartCoroutine(destroyArrow());
     }
     
-    private void toggleArrowEffect(bool toggle)
+    public void toggleArrowEffect(bool toggle)
     {
-        if (toggle != projectileEffect.isPlaying)
+        if (toggle)
         {
-            if (toggle)
-            {
-                projectileEffect.Play();
-                foreach (ParticleSystem particleEffect in particleEffects)
-                    particleEffect.Play();
-            }
-            else
-            {
-                projectileEffect.Stop();
-                foreach (ParticleSystem particleEffect in particleEffects)
-                    particleEffect.Stop();
-            }
+            projectileEffect.Play();
+            foreach (ParticleSystem particleEffect in particleEffects)
+                particleEffect.Play();
+        }
+        else
+        {
+            projectileEffect.Stop();
+            foreach (ParticleSystem particleEffect in particleEffects)
+                particleEffect.Stop();
         }
     }
 

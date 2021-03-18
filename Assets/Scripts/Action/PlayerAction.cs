@@ -17,7 +17,6 @@ namespace Player.Action
         private bool freezeMove;
         private bool secondJump;
         private bool landed;
-        private bool arrowSpawned;
         private GameObject spawnArrow;
 
         void Start()
@@ -29,7 +28,6 @@ namespace Player.Action
             freezeMove = false;
             secondJump = false;
             landed = true;
-            arrowSpawned = false;
             spawnArrow = null;
         }
 
@@ -42,16 +40,12 @@ namespace Player.Action
         public void QueueAttack1Action()
         {
             AnimatorStateInfo currentAnime = playerAnime.GetCurrentAnimatorStateInfo(0);
-            if (ActionQueue.Count == 0 || currentAnime.IsName("Attack_1") || currentAnime.IsName("Attack_2"))
-            {
-                if (ActionQueue.Count == 0)
-                    ActionQueue.Add("Attack_1");
-                else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
-                    ActionQueue.Add("Attack_2");
-                //else if ((currentAnime.IsName("Attack_1") && ActionQueue.Count == 2) || (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1))
-                else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
-                    ActionQueue.Add("Attack_3");
-            }
+            if (ActionQueue.Count == 0)
+                ActionQueue.Add("Attack_1");
+            else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
+                ActionQueue.Add("Attack_2");
+            else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
+                ActionQueue.Add("Attack_3");
         }
 
         public void QueueAttack2Action()
@@ -132,36 +126,12 @@ namespace Player.Action
                 else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3"))
                 {
                     //player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                    if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f ||
-                        playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f ||
-                        playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f)
-                    {
-                        if (!arrowSpawned)
-                        {
-                            arrowSpawned = true;
-                            Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
-                            spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
-                            spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
-                        }
-                        else
-                        {
-                            if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.50f ||
-                                playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.60f ||
-                                playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3") && playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45f)
-                            {
-                                if (spawnArrow != null)
-                                    spawnArrow.GetComponent<Rigidbody>().velocity = spawnArrow.transform.forward * 50.0f;
-                            }
-                        }
-                    }
                     if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                     {
                         playerAnime.ResetTrigger(ActionQueue[0]);
                         while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
                         
-                        arrowSpawned = false;
-                        spawnArrow = null;
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
                 }
@@ -254,6 +224,24 @@ namespace Player.Action
                 playerAnime.SetTrigger("Die");
             else
                 playerAnime.SetTrigger("Hit");
+        }
+
+        void SpawnArrow() // Use in anime event
+        {
+            Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
+            spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
+            spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
+            spawnArrow.GetComponent<Arrow>().toggleArrowEffect(false);
+        }
+
+        void ProjectileArrow() // Use in animate event
+        {
+            if (spawnArrow != null)
+            {
+                spawnArrow.GetComponent<Rigidbody>().velocity = spawnArrow.transform.forward * 50.0f;
+                spawnArrow.GetComponent<Arrow>().toggleArrowEffect(true);
+                spawnArrow = null;
+            }
         }
     }
 }
