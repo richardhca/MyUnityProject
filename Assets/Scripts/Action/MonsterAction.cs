@@ -59,14 +59,6 @@ namespace Monster.Action
             actionTime += Time.deltaTime;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.name.Equals("Player"))
-            {
-
-            }
-        }
-
         private void performAction(string animeName)
         {
             switch (animeName)

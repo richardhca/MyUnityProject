@@ -26,6 +26,7 @@ namespace Player.Config
         public KeyCode CameraReset = KeyCode.Z;
         public KeyCode Attack1 = KeyCode.F;
         public KeyCode Attack2 = KeyCode.G;
+        public KeyCode LockAttackDirection = KeyCode.Space;
         public KeyCode Jump = KeyCode.D;
         public KeyCode Run = KeyCode.S;
         public KeyCode Restart = KeyCode.Escape;
@@ -69,7 +70,8 @@ namespace Player.Config
 
             if (Input.GetKeyDown(Restart))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene("TitleScene");
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }

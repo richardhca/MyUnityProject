@@ -95,14 +95,29 @@ namespace Player.Action
                             //GetComponent<CameraAdjust>().freezeRotate = true;
                             break;
                         case "Attack_1":
+                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            {
+                                GetComponent<CameraAdjust>().AlignWithCamera();
+                                GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
+                            }
                             weaponAnime.PlayInFixedTime("Attack_1");
                             freezeMove = true;
                             break;
                         case "Attack_2":
+                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            {
+                                GetComponent<CameraAdjust>().AlignWithCamera();
+                                GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
+                            }
                             weaponAnime.PlayInFixedTime("Attack_2");
                             freezeMove = true;
                             break;
                         case "Attack_3":
+                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            {
+                                GetComponent<CameraAdjust>().AlignWithCamera();
+                                GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
+                            }
                             weaponAnime.PlayInFixedTime("Attack_3");
                             freezeMove = true;
                             break;
