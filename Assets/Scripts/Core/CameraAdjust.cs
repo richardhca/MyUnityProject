@@ -33,7 +33,8 @@ namespace GameCore.View
                 if (!freezeRotate)
                 {
                     float rotDir = Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) ? -2.0f : 2.0f;
-                    cameraHolder.transform.eulerAngles += new Vector3(0, rotDir, 0);
+                    if (Input.GetKey(GetComponent<PlayerControl>().CameraAimRotate)) rotDir /= 2.0f;
+                    cameraHolder.transform.Rotate(0, rotDir, 0);
                 }
             }
 

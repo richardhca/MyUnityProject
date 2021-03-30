@@ -50,8 +50,8 @@ namespace Player.Action
 
         public void QueueAttack2Action()
         {
-            //if (ActionQueue.Count == 0)
-            //    ActionQueue.Add("LightAtk");
+            if (ActionQueue.Count == 0)
+                ActionQueue.Add("Attack_High");
         }
 
         public void QueueJumpAction()
@@ -92,10 +92,9 @@ namespace Player.Action
                             break;
                         case "Land": // Land
                             freezeMove = true;
-                            //GetComponent<CameraAdjust>().freezeRotate = true;
                             break;
                         case "Attack_1":
-                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -104,7 +103,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_2":
-                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -113,7 +112,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_3":
-                            if (Input.GetKey(GetComponent<PlayerControl>().LockAttackDirection))
+                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -121,10 +120,15 @@ namespace Player.Action
                             weaponAnime.PlayInFixedTime("Attack_3");
                             freezeMove = true;
                             break;
-                        /*case "LightAtk":
+                        case "Attack_High":
+                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
+                            {
+                                GetComponent<CameraAdjust>().AlignWithCamera();
+                                GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
+                            }
+                            weaponAnime.PlayInFixedTime("Attack_1");
                             freezeMove = true;
-                            GetComponent<CameraAdjust>().freezeRotate = true;
-                            break;*/
+                            break;
                     }
                 }
                 else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Jump") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Glide"))
@@ -138,7 +142,7 @@ namespace Player.Action
                             ActionQueue.RemoveAt(0);
                     }
                 }
-                else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3"))
+                else if (playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_1") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_2") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_3") || playerAnime.GetCurrentAnimatorStateInfo(0).IsName("Attack_High"))
                 {
                     //player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
@@ -146,7 +150,6 @@ namespace Player.Action
                         playerAnime.ResetTrigger(ActionQueue[0]);
                         while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
-                        
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
                 }
@@ -226,6 +229,7 @@ namespace Player.Action
             playerAnime.ResetTrigger("Attack_1");
             playerAnime.ResetTrigger("Attack_2");
             playerAnime.ResetTrigger("Attack_3");
+            playerAnime.ResetTrigger("Attack_High");
             playerAnime.ResetTrigger("Hit");
         }
 
@@ -241,11 +245,13 @@ namespace Player.Action
                 playerAnime.SetTrigger("Hit");
         }
 
-        void SpawnArrow() // Use in anime event
+        void SpawnArrow(string attackType) // Use in anime event
         {
-            Quaternion angle = Quaternion.Euler(0, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
+            float aimAngle = (attackType == "AttackHigh") ? -30.0f : -3.0f;
+            Quaternion angle = Quaternion.Euler(aimAngle, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
             spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
             spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
+            spawnArrow.GetComponent<Arrow>().SetOwner(transform);
             spawnArrow.GetComponent<Arrow>().toggleArrowEffect(false);
         }
 

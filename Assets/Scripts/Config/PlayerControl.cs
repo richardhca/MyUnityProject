@@ -23,10 +23,11 @@ namespace Player.Config
         public KeyCode CameraRIGHT = KeyCode.Keypad6;
         public KeyCode CameraZoomIn = KeyCode.Keypad8;
         public KeyCode CameraZoomOut = KeyCode.Keypad0;
+        public KeyCode CameraAimRotate = KeyCode.A;
         public KeyCode CameraReset = KeyCode.Z;
         public KeyCode Attack1 = KeyCode.F;
         public KeyCode Attack2 = KeyCode.G;
-        public KeyCode LockAttackDirection = KeyCode.Space;
+        public KeyCode UnlockAttackDirection = KeyCode.Space;
         public KeyCode Jump = KeyCode.D;
         public KeyCode Run = KeyCode.S;
         public KeyCode Restart = KeyCode.Escape;

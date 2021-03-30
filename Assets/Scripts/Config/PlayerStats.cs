@@ -15,7 +15,7 @@ namespace Player.Config
         private static readonly string[] Name = {"Kikyou"};
         private static readonly CombatType[] ATKType = { CombatType.Range };
         private static readonly int[] HP = { 100 };
-        private static readonly int[] STR = { 8 };
+        private static readonly int[] STR = { 65 };
         private static readonly float[] AGI = { 5.0f };
 
         private int i;

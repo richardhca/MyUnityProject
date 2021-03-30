@@ -390,9 +390,11 @@ MonoBehaviour:
   CameraRIGHT: 262
   CameraZoomIn: 264
   CameraZoomOut: 256
+  CameraAimRotate: 97
   CameraReset: 122
   Attack1: 102
   Attack2: 103
+  UnlockAttackDirection: 32
   Jump: 100
   Run: 115
   Restart: 27
@@ -2237,6 +2239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPBar: {fileID: 6321882727669998289}
   player: {fileID: 884355647737877133}
+  autoHide: 1
 --- !u!1 &7824442029208991960
 GameObject:
   m_ObjectHideFlags: 0

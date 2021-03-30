@@ -98,6 +98,8 @@ namespace Monster.Action
             {
                 monsterAnime.SetTrigger("Die");
                 transform.GetComponent<Collider>().enabled = false;
+                transform.GetComponent<NavMeshAgent>().radius = 0.0f;
+                transform.GetComponent<NavMeshAgent>().height = 0.0f;
             }
             else
             {

@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Monster.Action;
+using Player.Config;
 
 public class Arrow : MonoBehaviour
 {
@@ -10,17 +12,34 @@ public class Arrow : MonoBehaviour
     [SerializeField] private ParticleSystem projectileEffect;
     [SerializeField] private List<ParticleSystem> particleEffects;
 
+    private Transform owner;
     private Vector3 initialPosition;
+    private bool removingObject;
 
-    private void Start()
+    void Start()
     {
         initialPosition = transform.position;
+        removingObject = false;
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
-        if (Vector3.Distance(transform.position, initialPosition) > 100.0f)
-            GetComponent<Rigidbody>().useGravity = true;
+        if (removingObject) return;
+
+        if (!GetComponent<Rigidbody>().useGravity)
+        {
+            //float angle = (transform.eulerAngles.x > 180.0f) ? transform.eulerAngles.x - 360.0f : transform.eulerAngles.x;
+            //if (Mathf.Abs(angle) * Vector3.Distance(transform.position, initialPosition) >= 30.0f)
+            if (Vector3.Distance(transform.position, initialPosition) >= 3.0f)
+                GetComponent<Rigidbody>().useGravity = true;
+        }
+        else
+        {
+            float radDeg = (GetComponent<Rigidbody>().velocity.y / GetComponent<Rigidbody>().velocity.z); // dy / dx
+            //Debug.Log(-1 * Mathf.Atan(radDeg) / Mathf.Deg2Rad);
+            float angleDiff = -1 * Mathf.Atan(radDeg) / Mathf.Deg2Rad - transform.eulerAngles.x;
+            transform.Rotate(angleDiff, 0, 0);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,16 +48,20 @@ public class Arrow : MonoBehaviour
         {
             if (other.transform.parent.gameObject == GameObject.FindWithTag("Player")) return;
             if (other.transform.parent.name.Equals("Enemies"))
-                other.GetComponent<MonsterAction>().GetHit(40); // Currently magic number for test, change value to player's attack later
+            {
+                int damage = (owner != null) ? owner.GetComponent<PlayerStats>().Attack : 20;
+                other.GetComponent<MonsterAction>().GetHit(damage);
+            }
         }
-        /*if (!other.name.Equals("Terrain"))
-        {
-            if (other.transform.parent != null && other.transform.parent.name.Equals("Enemies"))
-                other.GetComponent<MonsterAction>().GetHit(40); // Currently magic number for test, change value to player's attack later
-        }*/
+        removingObject = true;
         StartCoroutine(destroyArrow());
     }
-    
+
+    public void SetOwner(Transform character)
+    {
+        owner = character;
+    }
+
     public void toggleArrowEffect(bool toggle)
     {
         if (toggle)
