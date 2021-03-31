@@ -5,14 +5,23 @@ using UnityEngine;
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField] private List<GameObject> enemies;
-    [SerializeField] private int numberOfEnemies = 10;
+    //[SerializeField] private int numberOfEnemies = 10;
 
-    private const int areaRadius = 400;
+    private const int areaRadius = 230;
 
-    void Start()
+    public void GenerateEnemies(int n)
     {
         if (enemies.Count != 0)
-            StartCoroutine(generateEnemies(enemies[0], numberOfEnemies));
+            StartCoroutine(generateEnemies(enemies[0], n));
+    }
+
+    public void ClearEnemies()
+    {
+        while (transform.childCount != 0)
+        {
+            GameObject o = transform.GetChild(0).gameObject;
+            Destroy(o);
+        }
     }
 
     IEnumerator generateEnemies(GameObject enemy, int number)

@@ -14,6 +14,7 @@ public class Arrow : MonoBehaviour
 
     private Transform owner;
     private Vector3 initialPosition;
+    private float dx;
     private bool removingObject;
 
     void Start()
@@ -35,7 +36,7 @@ public class Arrow : MonoBehaviour
         }
         else
         {
-            float radDeg = (GetComponent<Rigidbody>().velocity.y / GetComponent<Rigidbody>().velocity.z); // dy / dx
+            float radDeg = (GetComponent<Rigidbody>().velocity.y / dx); // dy / dx
             //Debug.Log(-1 * Mathf.Atan(radDeg) / Mathf.Deg2Rad);
             float angleDiff = -1 * Mathf.Atan(radDeg) / Mathf.Deg2Rad - transform.eulerAngles.x;
             transform.Rotate(angleDiff, 0, 0);
@@ -57,9 +58,12 @@ public class Arrow : MonoBehaviour
         StartCoroutine(destroyArrow());
     }
 
-    public void SetOwner(Transform character)
+    public void SetArrowInfo(Transform character, float velocity)
     {
         owner = character;
+        float initialAngle = (transform.eulerAngles.x <= 0) ? -1 * transform.eulerAngles.x : -1 * (transform.eulerAngles.x - 360);
+        dx = Mathf.Cos(initialAngle*Mathf.Deg2Rad) * velocity;
+        Debug.Log(dx);
     }
 
     public void toggleArrowEffect(bool toggle)

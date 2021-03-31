@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Player.Config;
+using Player.Action;
 
 namespace GameCore.View
 {
@@ -33,7 +34,7 @@ namespace GameCore.View
                 if (!freezeRotate)
                 {
                     float rotDir = Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) ? -2.0f : 2.0f;
-                    if (Input.GetKey(GetComponent<PlayerControl>().CameraAimRotate)) rotDir /= 2.0f;
+                    if (Input.GetKey(GetComponent<PlayerControl>().CameraAimRotate)) rotDir /= 4.0f;
                     cameraHolder.transform.Rotate(0, rotDir, 0);
                 }
             }
@@ -72,6 +73,7 @@ namespace GameCore.View
         {
             GetComponent<PlayerStats>().Player.transform.eulerAngles += transform.localEulerAngles;
             transform.localEulerAngles = new Vector3(0, 0, 0);
+            GetComponent<PlayerMovement>().ResetTargetAngle();
             cameraHolder.transform.eulerAngles = GetComponent<PlayerStats>().Player.transform.eulerAngles;
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+using GameCore.Gameplay;
 using Monster.Config;
 using Player.Config;
 using Player.Action;
@@ -14,6 +15,7 @@ namespace Monster.Action
         private Animator monsterAnime;
         private bool freezeMove;
         private float actionTime;
+        GameObject gameManager;
         GameObject player;
 
         // Start is called before the first frame update
@@ -22,6 +24,7 @@ namespace Monster.Action
             monsterAnime = GetComponent<Animator>();
             freezeMove = false;
             actionTime = Mathf.Infinity;
+            gameManager = GameObject.FindWithTag("GameController");
             player = GameObject.FindWithTag("Player");
         }
 
@@ -100,10 +103,12 @@ namespace Monster.Action
                 transform.GetComponent<Collider>().enabled = false;
                 transform.GetComponent<NavMeshAgent>().radius = 0.0f;
                 transform.GetComponent<NavMeshAgent>().height = 0.0f;
+                StartCoroutine(monsterDead());
             }
             else
             {
                 monsterAnime.SetTrigger("Hit");
+                gameManager.GetComponent<GameManager>().AddScore(10);
             }
         }
 
@@ -118,6 +123,13 @@ namespace Monster.Action
             {
                 player.transform.GetChild(0).GetComponent<PlayerAction>().GetHit(GetComponent<MonsterStats>().Attack);
             }
+        }
+
+        IEnumerator monsterDead()
+        {
+            gameManager.GetComponent<GameManager>().EnemyKilled();
+            yield return new WaitForSeconds(3.0f);
+            Destroy(gameObject);
         }
     }
 }

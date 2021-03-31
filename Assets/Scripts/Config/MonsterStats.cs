@@ -8,16 +8,10 @@ namespace Monster.Config
 {
     public class MonsterStats : MonoBehaviour
     {
-        private static readonly string[] Name = { "Skeleton_Samurai" };
-        private static readonly CombatType[] ATKType = { CombatType.Melee };
-        private static readonly int[] HP = { 100 };
-        private static readonly int[] STR = { 5 };
-        private static readonly float[] AGI = { 5.0f };
-        private static readonly float[] ATKRANGE = { 4.5f };
+        [SerializeField] MonsterData monsterInfo;
 
         public static readonly float actionInterval = 2.0f;
-
-        private int i;
+        
         private CombatType attackType;
         private int HitPoint;
         private int Strength;
@@ -33,19 +27,18 @@ namespace Monster.Config
         
         void Start()
         {
-            i = 0; // Array.IndexOf(Name, transform.name);
-            attackType = ATKType[i];
-            HitPoint = HP[i];
-            Strength = STR[i];
-            Agility = AGI[i];
-            AtkRange = ATKRANGE[i];
+            attackType = monsterInfo.ATKType;
+            HitPoint = monsterInfo.HP;
+            Strength = monsterInfo.STR;
+            Agility = monsterInfo.AGI;
+            AtkRange = monsterInfo.ATKRANGE;
 
             GetComponent<NavMeshAgent>().speed = Agility;
         }
 
         public int MaxHealth()
         {
-            return HP[i];
+            return monsterInfo.HP;
         }
 
         public void TakeDamage(int damage)

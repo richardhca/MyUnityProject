@@ -47,9 +47,9 @@ namespace GameCore.GameMenu
                         SceneManager.LoadScene("GameScene");
                         break;
                     case "QUIT":
-                        if (Application.isEditor)
-                            UnityEditor.EditorApplication.isPlaying = false;
-                        else
+                        //if (Application.isEditor)
+                        //    UnityEditor.EditorApplication.isPlaying = false;
+                        //else
                             Application.Quit();
                         break;
                 }

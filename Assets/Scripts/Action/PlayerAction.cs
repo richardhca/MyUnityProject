@@ -8,6 +8,7 @@ using Player.Config;
 namespace Player.Action
 {
     [RequireComponent(typeof(PlayerControl))]
+    [RequireComponent(typeof(PlayerStats))]
     public class PlayerAction : MonoBehaviour
     {
         private Animator playerAnime;
@@ -247,11 +248,11 @@ namespace Player.Action
 
         void SpawnArrow(string attackType) // Use in anime event
         {
-            float aimAngle = (attackType == "AttackHigh") ? -30.0f : -3.0f;
+            float aimAngle = (attackType == "AttackHigh") ? -30.0f : -2.5f;
             Quaternion angle = Quaternion.Euler(aimAngle, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
             spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
             spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
-            spawnArrow.GetComponent<Arrow>().SetOwner(transform);
+            spawnArrow.GetComponent<Arrow>().SetArrowInfo(transform, 50.0f);
             spawnArrow.GetComponent<Arrow>().toggleArrowEffect(false);
         }
 

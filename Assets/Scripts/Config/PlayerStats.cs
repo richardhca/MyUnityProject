@@ -7,18 +7,12 @@ namespace Player.Config
 {
     public class PlayerStats : MonoBehaviour
     {
-        [SerializeField] GameObject player;
+        [SerializeField] PlayerData playerInfo;
         [SerializeField] GameObject weapon;
         [SerializeField] GameObject arrow;
         [SerializeField] Transform arrowSpawn;
-
-        private static readonly string[] Name = {"Kikyou"};
-        private static readonly CombatType[] ATKType = { CombatType.Range };
-        private static readonly int[] HP = { 100 };
-        private static readonly int[] STR = { 65 };
-        private static readonly float[] AGI = { 5.0f };
-
-        private int i;
+        
+        private GameObject player;
         private CombatType attackType;
         private int HitPoint;
         private int Strength;
@@ -38,17 +32,17 @@ namespace Player.Config
 
         void Start()
         {
-            i = Array.IndexOf(Name, transform.name);
-            attackType = ATKType[i];
-            HitPoint = HP[i];
-            Strength = STR[i];
-            Agility = AGI[i] / 20.0f;
+            player = GameObject.FindWithTag("Player");
+            attackType = playerInfo.ATKType;
+            HitPoint = playerInfo.HP;
+            Strength = playerInfo.STR;
+            Agility = playerInfo.AGI / 20.0f;
             Stamina = 100.0f;
         }
 
         public int MaxHealth()
         {
-            return HP[i];
+            return playerInfo.HP;
         }
 
         public bool ConsumeStamina()
@@ -76,5 +70,3 @@ namespace Player.Config
         }
     }  
 }
-
-public enum CombatType {Melee, Range};

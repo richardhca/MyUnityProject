@@ -10,31 +10,91 @@ using Player.Config;
 namespace GameCore.Gameplay {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private TextMeshProUGUI remainderText;
+        [SerializeField] private TextMeshProUGUI eliminatedText;
+        [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private Transform youWinScreen;
+        [SerializeField] private TextMeshProUGUI youWinText;
         [SerializeField] private Transform gameOverScreen;
         [SerializeField] private TextMeshProUGUI gameOverText;
+        [SerializeField] private Transform enemyContainer;
+
+        private const int maxLevel = 5;
 
         private GameObject player;
+        private int level;
+        private int[] enemiesEachLvl;
         private int score;
         private bool EndOfGame;
+
+        private int enemiesEliminated;
+        private int enemiesRemain;
+
+        private bool startingNextLevel;
 
         public int Score => score;
 
         void Start()
         {
             player = GameObject.FindWithTag("Player");
+            level = 1;
+            enemiesEachLvl = new int[maxLevel];
+            for (int i=0; i<maxLevel; i++)
+                enemiesEachLvl[i] = 10 + (5*i);
             score = 0;
             EndOfGame = false;
+            youWinScreen.gameObject.SetActive(false);
             gameOverScreen.gameObject.SetActive(false);
+            enemiesEliminated = 0;
+            enemiesRemain = 0;
+            startingNextLevel = false;
+            startLevel();
         }
 
         void Update()
         {
-            if (!EndOfGame && player.transform.GetChild(0).GetComponent<PlayerStats>().IsDead())
+            levelText.text = "Level " + level;
+            remainderText.text = "Remainder: " + enemiesRemain;
+            eliminatedText.text = "Eliminated: " + enemiesEliminated;
+            scoreText.text = "Score: " + score;
+
+            if (EndOfGame) return;
+
+            if (player.transform.GetChild(0).GetComponent<PlayerStats>().IsDead())
             {
                 EndOfGame = true;
                 gameOverScreen.gameObject.SetActive(true);
-                StartCoroutine(finishGame());
+                StartCoroutine(finishGame(false));
             }
+
+            if (enemyContainer.transform.childCount == 0 && !startingNextLevel)
+            {
+                if (level == maxLevel)
+                {
+                    EndOfGame = true;
+                    youWinScreen.gameObject.SetActive(true);
+                    StartCoroutine(finishGame(true));
+                }
+                else
+                {
+                    startingNextLevel = true;
+                    StartCoroutine(toNextLevel());
+                }
+            }
+        }
+
+        private void startLevel()
+        {
+            enemiesRemain = enemiesEachLvl[level - 1];
+            enemyContainer.GetComponent<EnemyGenerator>().GenerateEnemies(enemiesEachLvl[level - 1]);
+        }
+
+        public void EnemyKilled()
+        {
+            enemiesEliminated++;
+            enemiesRemain--;
+            AddScore(100);
         }
 
         public void AddScore(int score)
@@ -42,16 +102,33 @@ namespace GameCore.Gameplay {
             this.score += score;
         }
 
-        IEnumerator finishGame()
+        IEnumerator toNextLevel()
         {
-            Color backgroundColor = gameOverScreen.GetComponent<Image>().color;
-            Color textColor = gameOverText.color;
-            while (backgroundColor.a < 1.0f || textColor.a < 1.0f)
+            enemyContainer.GetComponent<EnemyGenerator>().ClearEnemies();
+            yield return new WaitForSeconds(3.0f);
+            level++;
+            startLevel();
+            yield return new WaitForSeconds(2.0f);
+            startingNextLevel = false;
+        }
+
+        IEnumerator finishGame(bool win)
+        {
+            Color color = Color.white;
+            color.a = 0.0f;
+            while (color.a < 1.0f)
             {
-                backgroundColor.a = Mathf.Min(backgroundColor.a + 0.02f, 1.0f);
-                textColor.a = Mathf.Min(textColor.a + 0.02f, 1.0f);
-                gameOverText.color = textColor;
-                gameOverScreen.GetComponent<Image>().color = backgroundColor;
+                color.a = Mathf.Min(color.a + 0.02f, 1.0f);
+                if (win)
+                {
+                    youWinText.color = color;
+                    youWinScreen.GetComponent<Image>().color = color;
+                }
+                else
+                {
+                    gameOverText.color = color;
+                    gameOverScreen.GetComponent<Image>().color = color;
+                }
                 yield return new WaitForEndOfFrame();
             }
             yield return new WaitForSeconds(3.0f);

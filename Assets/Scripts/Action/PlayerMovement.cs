@@ -63,5 +63,10 @@ namespace Player.Action
             else if (Input.GetKey(GetComponent<PlayerControl>().LEFT)) SetPlayerLocalAngle(270.0f);
             else if (Input.GetKey(GetComponent<PlayerControl>().RIGHT)) SetPlayerLocalAngle(90.0f);
         }
+
+        public void ResetTargetAngle()
+        {
+            targetAngle = 0.0f;
+        }
     }
 }

@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d214715553e4ea64fa3a306b8f36922f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerInfo: {fileID: 11400000, guid: 86aeafc814586d74992a137bda2a2733, type: 2}
   weapon: {fileID: 399885771507607490}
   arrow: {fileID: 6781713063958371828, guid: 4685ed4d70bc2594c990fed77e6ce176, type: 3}
   arrowSpawn: {fileID: 1620469898}

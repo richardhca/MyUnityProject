@@ -80,6 +80,8 @@
     <Compile Include="Assets\Scripts\Core\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Core\PlayerEnergyBar.cs" />
     <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObject\MonsterData.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObject\PlayerData.cs" />
     <None Include="Assets\Terrain\Trees\RuntimeComponents\Shaders\CTI_LOD_Billboard_301.shader" />
     <None Include="Assets\Terrain\Trees\RuntimeComponents\Shaders\Includes\CTI_Builtin4xTreeLibraryTumbling_301.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
