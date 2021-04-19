@@ -30,11 +30,15 @@ namespace Player.Config
         public KeyCode UnlockAttackDirection = KeyCode.Space;
         public KeyCode Jump = KeyCode.D;
         public KeyCode Run = KeyCode.S;
-        public KeyCode Restart = KeyCode.Escape;
+        public KeyCode Pause = KeyCode.Escape;
+
+        public bool GamePaused = false;
 
         void FixedUpdate()
         {
             if (GetComponent<PlayerStats>().IsDead()) return;
+
+            if (GamePaused) return;
 
             if (Input.GetKey(UP) || Input.GetKey(DOWN) || Input.GetKey(LEFT) || Input.GetKey(RIGHT))
             {
@@ -69,11 +73,11 @@ namespace Player.Config
                 GetComponent<PlayerAction>().QueueJumpAction();
             }
 
-            if (Input.GetKeyDown(Restart))
+            /*if (Input.GetKeyDown(Pause))
             {
                 SceneManager.LoadScene("TitleScene");
                 //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            }*/
         }
     }
 }

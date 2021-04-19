@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Core\HostileHPBar.cs" />
     <Compile Include="Assets\Scripts\Core\HPBarWidgets.cs" />
     <Compile Include="Assets\Scripts\Core\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\Core\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Core\PlayerEnergyBar.cs" />
     <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
     <Compile Include="Assets\Scripts\ScriptableObject\MonsterData.cs" />

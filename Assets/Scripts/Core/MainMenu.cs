@@ -12,7 +12,6 @@ namespace GameCore.GameMenu
         private KeyCode UP = KeyCode.UpArrow;
         private KeyCode DOWN = KeyCode.DownArrow;
         private KeyCode SPACE = KeyCode.Space;
-        private KeyCode ENTER = KeyCode.KeypadEnter;
 
         private int currentSelectedIndex;
         private int newSelectedIndex;
@@ -38,7 +37,7 @@ namespace GameCore.GameMenu
                 selectNewIndex(false);
             }
 
-            if (Input.GetKeyDown(SPACE) || Input.GetKeyDown(ENTER))
+            if (Input.GetKeyDown(SPACE))
             {
                 var option = transform.GetChild(currentSelectedIndex);
                 switch (option.GetComponent<TextMeshProUGUI>().text)

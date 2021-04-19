@@ -19,6 +19,7 @@ namespace GameCore.Gameplay {
         [SerializeField] private Transform gameOverScreen;
         [SerializeField] private TextMeshProUGUI gameOverText;
         [SerializeField] private Transform enemyContainer;
+        [SerializeField] private GameObject PauseMenu;
 
         private const int maxLevel = 5;
 
@@ -60,6 +61,13 @@ namespace GameCore.Gameplay {
             scoreText.text = "Score: " + score;
 
             if (EndOfGame) return;
+
+            if (Input.GetKeyDown(player.transform.GetChild(0).GetComponent<PlayerControl>().Pause))
+            {
+                Time.timeScale = 0;
+                player.transform.GetChild(0).GetComponent<PlayerControl>().GamePaused = true;
+                PauseMenu.SetActive(true);
+            }
 
             if (player.transform.GetChild(0).GetComponent<PlayerStats>().IsDead())
             {

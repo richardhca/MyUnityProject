@@ -63,7 +63,6 @@ public class Arrow : MonoBehaviour
         owner = character;
         float initialAngle = (transform.eulerAngles.x <= 0) ? -1 * transform.eulerAngles.x : -1 * (transform.eulerAngles.x - 360);
         dx = Mathf.Cos(initialAngle*Mathf.Deg2Rad) * velocity;
-        Debug.Log(dx);
     }
 
     public void toggleArrowEffect(bool toggle)
