@@ -11,6 +11,11 @@ namespace Player.Action
     [RequireComponent(typeof(PlayerStats))]
     public class PlayerAction : MonoBehaviour
     {
+        [SerializeField] private AudioClip moveSE;
+        [SerializeField] private AudioClip jumpSE;
+        [SerializeField] private AudioClip landSE;
+        [SerializeField] private AudioClip attackSE;
+
         private Animator playerAnime;
         private Animator weaponAnime;
         private List<string> ActionQueue;
@@ -88,10 +93,12 @@ namespace Player.Action
                     {
                         case "Jump": // Jump
                             GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
+                            AudioSource.PlayClipAtPoint(jumpSE, transform.position);
                             landed = false;
                             secondJump = true;
                             break;
                         case "Land": // Land
+                            AudioSource.PlayClipAtPoint(landSE, transform.position);
                             freezeMove = true;
                             break;
                         case "Attack_1":
@@ -216,6 +223,7 @@ namespace Player.Action
             {
                 secondJump = false;
                 GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
+                AudioSource.PlayClipAtPoint(jumpSE, transform.position);
             }
         }
 
@@ -261,9 +269,15 @@ namespace Player.Action
             if (spawnArrow != null)
             {
                 spawnArrow.GetComponent<Rigidbody>().velocity = spawnArrow.transform.forward * 50.0f;
+                AudioSource.PlayClipAtPoint(attackSE, GetComponent<PlayerStats>().ArrowSpawn.position);
                 spawnArrow.GetComponent<Arrow>().toggleArrowEffect(true);
                 spawnArrow = null;
             }
+        }
+
+        void MoveSound() // Use in animate event
+        {
+            AudioSource.PlayClipAtPoint(moveSE, transform.position);
         }
     }
 }

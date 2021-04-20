@@ -318,6 +318,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a83c34924420149a6d1b6f7f203d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSE: {fileID: 8300000, guid: 6ca80256c2c9e114fbeb9a15e5615ebe, type: 3}
+  attackSE: {fileID: 8300000, guid: 821700effb1b0d345a16fae6912ae1c1, type: 3}
+  hitSE: {fileID: 8300000, guid: 4fd7e24bcf629e84286ddb2f8cca43f1, type: 3}
 --- !u!195 &3048619061067358042
 NavMeshAgent:
   m_ObjectHideFlags: 0

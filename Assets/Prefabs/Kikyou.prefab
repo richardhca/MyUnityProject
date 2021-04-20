@@ -397,7 +397,8 @@ MonoBehaviour:
   UnlockAttackDirection: 32
   Jump: 100
   Run: 115
-  Restart: 27
+  Pause: 27
+  GamePaused: 0
 --- !u!114 &4216036225368943475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6919a35df86f83478a07392d9ca926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSE: {fileID: 8300000, guid: 01d32eebad7671d49b021ebb6e8c5774, type: 3}
+  jumpSE: {fileID: 8300000, guid: d65acddb98b23bf4b8ae76e8c57cf8dd, type: 3}
+  landSE: {fileID: 8300000, guid: 810c49fe9511e5f45ad1d7140fdd7145, type: 3}
+  attackSE: {fileID: 8300000, guid: 6492ea112dabceb45a58a511d1584b3a, type: 3}
 --- !u!114 &4538757545344406180
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4973,6 +4973,7 @@ MonoBehaviour:
   particleEffects:
   - {fileID: 3043007225267446461}
   - {fileID: 3230198341484659356}
+  hitSE: {fileID: 8300000, guid: 06482b1d72925b843ac606984bbd9d8f, type: 3}
 --- !u!1 &7488838606477606357
 GameObject:
   m_ObjectHideFlags: 0

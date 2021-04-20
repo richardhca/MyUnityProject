@@ -12,6 +12,10 @@ namespace Monster.Action
 {
     public class MonsterAction : MonoBehaviour
     {
+        [SerializeField] private AudioClip moveSE;
+        [SerializeField] private AudioClip attackSE;
+        [SerializeField] private AudioClip hitSE;
+
         private Animator monsterAnime;
         private bool freezeMove;
         private float actionTime;
@@ -119,10 +123,17 @@ namespace Monster.Action
 
         void HitCheck() // This function is used by animation event
         {
+            AudioSource.PlayClipAtPoint(attackSE, transform.position);
             if (Vector3.Distance(transform.position, player.transform.position) <= GetComponent<MonsterStats>().AttackRange)
             {
                 player.transform.GetChild(0).GetComponent<PlayerAction>().GetHit(GetComponent<MonsterStats>().Attack);
+                AudioSource.PlayClipAtPoint(hitSE, player.transform.position);
             }
+        }
+
+        void MonsterMoveSound() // This function is used by animation event
+        {
+            AudioSource.PlayClipAtPoint(moveSE, transform.position);
         }
 
         IEnumerator monsterDead()

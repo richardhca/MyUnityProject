@@ -12,6 +12,8 @@ public class Arrow : MonoBehaviour
     [SerializeField] private ParticleSystem projectileEffect;
     [SerializeField] private List<ParticleSystem> particleEffects;
 
+    [SerializeField] private AudioClip hitSE;
+
     private Transform owner;
     private Vector3 initialPosition;
     private float dx;
@@ -52,6 +54,7 @@ public class Arrow : MonoBehaviour
             {
                 int damage = (owner != null) ? owner.GetComponent<PlayerStats>().Attack : 20;
                 other.GetComponent<MonsterAction>().GetHit(damage);
+                AudioSource.PlayClipAtPoint(hitSE, transform.position);
             }
         }
         removingObject = true;
