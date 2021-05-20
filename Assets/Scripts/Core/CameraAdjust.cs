@@ -34,9 +34,10 @@ namespace GameCore.View
             {
                 if (!freezeRotate)
                 {
-                    float rotDir = Input.GetKey(keyConfig.CameraLEFT) ? -2.0f : 2.0f;
-                    if (Input.GetKey(keyConfig.CameraAimRotate)) rotDir /= 4.0f;
-                    cameraHolder.transform.Rotate(0, rotDir, 0);
+                    float rotSpeed = 6.0f;
+                    float rotDir = Input.GetKey(keyConfig.CameraLEFT) ? -1.0f : 1.0f;
+                    if (Input.GetKey(keyConfig.CameraAimRotate)) rotSpeed /= 4.0f;
+                    cameraHolder.transform.Rotate(0, rotDir*rotSpeed, 0);
                 }
             }
 
@@ -59,9 +60,9 @@ namespace GameCore.View
             {
                 float cameraZoom = mainCamera.gameObject.transform.localPosition.z;
                 if (Input.GetKey(keyConfig.CameraZoomIn) && cameraZoom < -2.5f)
-                    mainCamera.gameObject.transform.localPosition += new Vector3(0, 0, 0.1f);
+                    mainCamera.gameObject.transform.localPosition += new Vector3(0, 0, 0.25f);
                 else if (Input.GetKey(keyConfig.CameraZoomOut) && cameraZoom > -7.5f)
-                    mainCamera.gameObject.transform.localPosition -= new Vector3(0, 0, 0.1f);
+                    mainCamera.gameObject.transform.localPosition -= new Vector3(0, 0, 0.25f);
             }
         }
 

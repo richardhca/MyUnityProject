@@ -42,10 +42,12 @@ namespace GameCore.KeyConfig
         void Awake()
         {
             keyConfig = new Dictionary<string, KeyCode>();
+            loadKeyConfigData();
             var material = transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontMaterial;
             for (int i = 0; i < keyDefault.Count; i++)
             {
-                keyConfig.Add(keyDefault.Keys.ElementAt(i), keyDefault.Values.ElementAt(i));
+                if (keyConfig[keyDefault.Keys.ElementAt(i)] == KeyCode.None)
+                    keyConfig[keyDefault.Keys.ElementAt(i)] = keyDefault.Values.ElementAt(i);
 
                 GameObject keyCat = new GameObject(keyDefault.Keys.ElementAt(i));
                 keyCat.transform.SetParent(keyTable);
@@ -78,11 +80,10 @@ namespace GameCore.KeyConfig
                 codeRect.anchorMin = Vector2.zero;
                 codeRect.anchorMax = Vector2.one;
                 var codetxt = codeText.AddComponent<TextMeshProUGUI>();
-                codetxt.text = keyDefault.Values.ElementAt(i).ToString();
+                codetxt.text = keyConfig[keyDefault.Keys.ElementAt(i)].ToString();
                 codetxt.alignment = TextAlignmentOptions.Center;
                 codetxt.fontMaterial = material;
             }
-            mapToKeyConfigData();
         }
 
         void Start()
@@ -151,7 +152,7 @@ namespace GameCore.KeyConfig
 
             if (Input.GetKeyDown(ESC))
             {
-                mapToKeyConfigData();
+                saveKeyConfigData();
                 mainMenu.SetActive(true);
                 scrollableContent.GetComponent<ScrollRect>().verticalNormalizedPosition = 1.0f;
                 gameObject.SetActive(false);
@@ -199,7 +200,30 @@ namespace GameCore.KeyConfig
             }
         }
 
-        private void mapToKeyConfigData()
+        private void loadKeyConfigData()
+        {
+            keyConfig.Clear();
+            keyConfig.Add("UP", keyConfigData.UP);
+            keyConfig.Add("DOWN", keyConfigData.DOWN);
+            keyConfig.Add("LEFT", keyConfigData.LEFT);
+            keyConfig.Add("RIGHT", keyConfigData.RIGHT);
+            keyConfig.Add("CameraUP", keyConfigData.CameraUP);
+            keyConfig.Add("CameraDOWN", keyConfigData.CameraDOWN);
+            keyConfig.Add("CameraLEFT", keyConfigData.CameraLEFT);
+            keyConfig.Add("CameraRIGHT", keyConfigData.CameraRIGHT);
+            keyConfig.Add("CameraZoomIn", keyConfigData.CameraZoomIn);
+            keyConfig.Add("CameraZoomOut", keyConfigData.CameraZoomOut);
+            keyConfig.Add("CameraAimRotate", keyConfigData.CameraAimRotate);
+            keyConfig.Add("CameraReset", keyConfigData.CameraReset);
+            keyConfig.Add("Attack1", keyConfigData.Attack1);
+            keyConfig.Add("Attack2", keyConfigData.Attack2);
+            keyConfig.Add("UnlockAttackDirection", keyConfigData.UnlockAttackDirection);
+            keyConfig.Add("Jump", keyConfigData.Jump);
+            keyConfig.Add("Run", keyConfigData.Run);
+            keyConfig.Add("Pause", keyConfigData.Pause);
+        }
+
+        private void saveKeyConfigData()
         {
             keyConfigData.UP = keyConfig["UP"];
             keyConfigData.DOWN = keyConfig["DOWN"];

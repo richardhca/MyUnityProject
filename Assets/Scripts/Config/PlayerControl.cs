@@ -15,9 +15,11 @@ namespace Player.Config
     {
         [SerializeField] KeyConfigData keyConfig;
 
+        private bool attackKeyOnPress = false;
+
         public bool GamePaused = false;
 
-        void FixedUpdate()
+        void Update()
         {
             if (GetComponent<PlayerStats>().IsDead()) return;
 
@@ -45,6 +47,8 @@ namespace Player.Config
 
             if (Input.GetKeyDown(keyConfig.Attack1))
             {
+                if (attackKeyOnPress) return;
+                attackKeyOnPress = true;
                 GetComponent<PlayerAction>().QueueAttack1Action();
             }
             else if (Input.GetKeyDown(keyConfig.Attack2))
@@ -54,6 +58,11 @@ namespace Player.Config
             else if (Input.GetKeyDown(keyConfig.Jump))
             {
                 GetComponent<PlayerAction>().QueueJumpAction();
+            }
+
+            if (Input.GetKeyUp(keyConfig.Attack1))
+            {
+                attackKeyOnPress = false;
             }
         }
     }

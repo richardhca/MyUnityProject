@@ -47,12 +47,11 @@ namespace Player.Action
 
         public void QueueAttack1Action()
         {
-            AnimatorStateInfo currentAnime = playerAnime.GetCurrentAnimatorStateInfo(0);
             if (ActionQueue.Count == 0)
                 ActionQueue.Add("Attack_1");
-            else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
+            else if (ActionQueue[0] == "Attack_1" && ActionQueue.Count == 1)
                 ActionQueue.Add("Attack_2");
-            else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
+            else if (ActionQueue[0] == "Attack_2" && ActionQueue.Count == 1)
                 ActionQueue.Add("Attack_3");
         }
 
@@ -91,7 +90,7 @@ namespace Player.Action
                 {
                     ResetActionTriggers();
                     playerAnime.SetTrigger(ActionQueue[0]);
-                    switch (ActionQueue[0].ToString())
+                    switch (ActionQueue[0])
                     {
                         case "Jump": // Jump
                             GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
@@ -158,8 +157,9 @@ namespace Player.Action
                     if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                     {
                         playerAnime.ResetTrigger(ActionQueue[0]);
-                        while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
+                        if (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
+                            
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
                 }
@@ -258,7 +258,7 @@ namespace Player.Action
 
         void SpawnArrow(string attackType) // Use in anime event
         {
-            float aimAngle = (attackType == "AttackHigh") ? -30.0f : -2.5f;
+            float aimAngle = (attackType == "AttackHigh") ? -30.0f : Mathf.Max(-10, 12.5f*Camera.main.transform.localPosition.y-65.0f); // initially -2.5
             Quaternion angle = Quaternion.Euler(aimAngle, GetComponent<PlayerStats>().Player.transform.eulerAngles.y + transform.localEulerAngles.y, 0);
             spawnArrow = Instantiate(GetComponent<PlayerStats>().Arrow, GetComponent<PlayerStats>().ArrowSpawn.position, angle);
             spawnArrow.transform.localPosition -= spawnArrow.transform.forward * 0.5f;
