@@ -23,6 +23,7 @@ namespace Player.Action
         private List<string> ActionQueue;
         //private RigidbodyConstraints originalConstraints;
         private bool freezeMove;
+        private bool attackCombo;
         private bool secondJump;
         private bool landed;
         private GameObject spawnArrow;
@@ -34,6 +35,7 @@ namespace Player.Action
             ActionQueue = new List<string>();
             //originalConstraints = player.GetComponent<Rigidbody>().constraints;
             freezeMove = false;
+            attackCombo = false;
             secondJump = false;
             landed = true;
             spawnArrow = null;
@@ -49,11 +51,25 @@ namespace Player.Action
         {
             AnimatorStateInfo currentAnime = playerAnime.GetCurrentAnimatorStateInfo(0);
             if (ActionQueue.Count == 0)
+            {
                 ActionQueue.Add("Attack_1");
-            else if (currentAnime.IsName("Attack_1") && ActionQueue.Count == 1)
-                ActionQueue.Add("Attack_2");
-            else if (currentAnime.IsName("Attack_2") && ActionQueue.Count == 1)
-                ActionQueue.Add("Attack_3");
+                //Debug.Log("Queue Attack_1, Queue Count: " + ActionQueue.Count);
+            }
+            else if (attackCombo)
+            {
+                if (ActionQueue[0] == "Attack_1" && ActionQueue.Count == 1)
+                {
+                    ActionQueue.Add("Attack_2");
+                    //Debug.Log("Queue Attack_2, Queue Count: " + ActionQueue.Count);
+                }
+                else if (ActionQueue[0] == "Attack_2" && ActionQueue.Count == 1)
+                {
+                    ActionQueue.Add("Attack_3");
+                    //Debug.Log("Queue Attack_3, Queue Count: " + ActionQueue.Count);
+                }
+
+                attackCombo = false;
+            }
         }
 
         public void QueueAttack2Action()
@@ -91,7 +107,7 @@ namespace Player.Action
                 {
                     ResetActionTriggers();
                     playerAnime.SetTrigger(ActionQueue[0]);
-                    switch (ActionQueue[0].ToString())
+                    switch (ActionQueue[0])
                     {
                         case "Jump": // Jump
                             GetComponent<PlayerStats>().Player.GetComponent<Rigidbody>().velocity = new Vector3(0, 7.5f, 0);
@@ -157,11 +173,15 @@ namespace Player.Action
                     //player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                     {
+                        attackCombo = false;
                         playerAnime.ResetTrigger(ActionQueue[0]);
-                        while (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
+                        if (ActionQueue.Count > 0 && playerAnime.GetCurrentAnimatorStateInfo(0).IsName(ActionQueue[0]))
                             ActionQueue.RemoveAt(0);
+                            
                         //player.GetComponent<Rigidbody>().constraints = originalConstraints;
                     }
+                    else
+                        attackCombo = (ActionQueue.Count < 2);
                 }
                 else if (playerAnime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
                 {
