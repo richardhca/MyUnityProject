@@ -10,6 +10,7 @@ using Player.Config;
 namespace GameCore.Gameplay {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] KeyConfigData keyConfig;
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI remainderText;
         [SerializeField] private TextMeshProUGUI eliminatedText;
@@ -62,7 +63,7 @@ namespace GameCore.Gameplay {
 
             if (EndOfGame) return;
 
-            if (Input.GetKeyDown(player.transform.GetChild(0).GetComponent<PlayerControl>().Pause))
+            if (Input.GetKeyDown(keyConfig.Pause))
             {
                 Time.timeScale = 0;
                 player.transform.GetChild(0).GetComponent<PlayerControl>().GamePaused = true;

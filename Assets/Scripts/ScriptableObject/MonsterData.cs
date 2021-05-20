@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "NewMonsterData", menuName = "CharacterData/MonsterData", order = 1)]
+[CreateAssetMenu(fileName = "NewMonsterData", menuName = "CharacterData/MonsterData", order = 2)]
 public class MonsterData : ScriptableObject
 {
     public string Name;

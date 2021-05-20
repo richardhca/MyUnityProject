@@ -9,6 +9,8 @@ namespace Player.Action
     [RequireComponent(typeof(PlayerControl))]
     public class PlayerMovement : MonoBehaviour
     {
+        [SerializeField] KeyConfigData keyConfig;
+
         private float targetAngle;
         private float rotateSpeed;
 
@@ -54,14 +56,14 @@ namespace Player.Action
 
         public void RotateCharacter()
         {
-            if (Input.GetKey(GetComponent<PlayerControl>().UP) && Input.GetKey(GetComponent<PlayerControl>().LEFT)) SetPlayerLocalAngle(315.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().UP) && Input.GetKey(GetComponent<PlayerControl>().RIGHT)) SetPlayerLocalAngle(45.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().DOWN) && Input.GetKey(GetComponent<PlayerControl>().LEFT)) SetPlayerLocalAngle(225.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().DOWN) && Input.GetKey(GetComponent<PlayerControl>().RIGHT)) SetPlayerLocalAngle(135.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().UP)) SetPlayerLocalAngle(0.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().DOWN)) SetPlayerLocalAngle(180.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().LEFT)) SetPlayerLocalAngle(270.0f);
-            else if (Input.GetKey(GetComponent<PlayerControl>().RIGHT)) SetPlayerLocalAngle(90.0f);
+            if (Input.GetKey(keyConfig.UP) && Input.GetKey(keyConfig.LEFT)) SetPlayerLocalAngle(315.0f);
+            else if (Input.GetKey(keyConfig.UP) && Input.GetKey(keyConfig.RIGHT)) SetPlayerLocalAngle(45.0f);
+            else if (Input.GetKey(keyConfig.DOWN) && Input.GetKey(keyConfig.LEFT)) SetPlayerLocalAngle(225.0f);
+            else if (Input.GetKey(keyConfig.DOWN) && Input.GetKey(keyConfig.RIGHT)) SetPlayerLocalAngle(135.0f);
+            else if (Input.GetKey(keyConfig.UP)) SetPlayerLocalAngle(0.0f);
+            else if (Input.GetKey(keyConfig.DOWN)) SetPlayerLocalAngle(180.0f);
+            else if (Input.GetKey(keyConfig.LEFT)) SetPlayerLocalAngle(270.0f);
+            else if (Input.GetKey(keyConfig.RIGHT)) SetPlayerLocalAngle(90.0f);
         }
 
         public void ResetTargetAngle()

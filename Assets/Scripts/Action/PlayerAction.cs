@@ -16,6 +16,8 @@ namespace Player.Action
         [SerializeField] private AudioClip landSE;
         [SerializeField] private AudioClip attackSE;
 
+        [SerializeField] KeyConfigData keyConfig;
+
         private Animator playerAnime;
         private Animator weaponAnime;
         private List<string> ActionQueue;
@@ -102,7 +104,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_1":
-                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
+                            if (!Input.GetKey(keyConfig.UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -111,7 +113,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_2":
-                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
+                            if (!Input.GetKey(keyConfig.UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -120,7 +122,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_3":
-                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
+                            if (!Input.GetKey(keyConfig.UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);
@@ -129,7 +131,7 @@ namespace Player.Action
                             freezeMove = true;
                             break;
                         case "Attack_High":
-                            if (!Input.GetKey(GetComponent<PlayerControl>().UnlockAttackDirection))
+                            if (!Input.GetKey(keyConfig.UnlockAttackDirection))
                             {
                                 GetComponent<CameraAdjust>().AlignWithCamera();
                                 GetComponent<PlayerMovement>().SetPlayerLocalAngle(0.0f);

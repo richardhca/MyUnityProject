@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcab43edb108eef42868744b8dda2f1a, type: 3}
+  m_Name: KeyConfig
+  m_EditorClassIdentifier: 
+  UP: 273
+  DOWN: 274
+  LEFT: 276
+  RIGHT: 275
+  CameraUP: 263
+  CameraDOWN: 265
+  CameraLEFT: 260
+  CameraRIGHT: 262
+  CameraZoomIn: 264
+  CameraZoomOut: 256
+  CameraAimRotate: 97
+  CameraReset: 122
+  Attack1: 102
+  Attack2: 103
+  UnlockAttackDirection: 32
+  Jump: 100
+  Run: 115
+  Pause: 27

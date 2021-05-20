@@ -380,24 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25edcad893315924f9b8f6df19e88877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UP: 261
-  DOWN: 258
-  LEFT: 257
-  RIGHT: 259
-  CameraUP: 263
-  CameraDOWN: 265
-  CameraLEFT: 260
-  CameraRIGHT: 262
-  CameraZoomIn: 264
-  CameraZoomOut: 256
-  CameraAimRotate: 97
-  CameraReset: 122
-  Attack1: 102
-  Attack2: 103
-  UnlockAttackDirection: 32
-  Jump: 100
-  Run: 115
-  Pause: 27
+  keyConfig: {fileID: 11400000, guid: 8cf2ea384fc901841a5d639f1ce54a2b, type: 2}
   GamePaused: 0
 --- !u!114 &4216036225368943475
 MonoBehaviour:
@@ -415,6 +398,7 @@ MonoBehaviour:
   jumpSE: {fileID: 8300000, guid: d65acddb98b23bf4b8ae76e8c57cf8dd, type: 3}
   landSE: {fileID: 8300000, guid: 810c49fe9511e5f45ad1d7140fdd7145, type: 3}
   attackSE: {fileID: 8300000, guid: 6492ea112dabceb45a58a511d1584b3a, type: 3}
+  keyConfig: {fileID: 11400000, guid: 8cf2ea384fc901841a5d639f1ce54a2b, type: 2}
 --- !u!114 &4538757545344406180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98dbaff29f9d74f4584c3219dec8abe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyConfig: {fileID: 11400000, guid: 8cf2ea384fc901841a5d639f1ce54a2b, type: 2}
 --- !u!114 &7597124951533456710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55459858971c7fb4da13ea9150af745b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyConfig: {fileID: 11400000, guid: 8cf2ea384fc901841a5d639f1ce54a2b, type: 2}
   cameraHolder: {fileID: 0}
   freezeRotate: 0
 --- !u!65 &884355647737877131

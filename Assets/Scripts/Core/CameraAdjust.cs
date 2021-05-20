@@ -11,6 +11,7 @@ namespace GameCore.View
     [RequireComponent(typeof(PlayerControl))]
     public class CameraAdjust : MonoBehaviour
     {
+        [SerializeField] KeyConfigData keyConfig;
         [SerializeField] GameObject cameraHolder;
 
         private Camera mainCamera;
@@ -29,37 +30,37 @@ namespace GameCore.View
 
         public void AdjustCamera()
         {
-            if (Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) || Input.GetKey(GetComponent<PlayerControl>().CameraRIGHT))
+            if (Input.GetKey(keyConfig.CameraLEFT) || Input.GetKey(keyConfig.CameraRIGHT))
             {
                 if (!freezeRotate)
                 {
-                    float rotDir = Input.GetKey(GetComponent<PlayerControl>().CameraLEFT) ? -2.0f : 2.0f;
-                    if (Input.GetKey(GetComponent<PlayerControl>().CameraAimRotate)) rotDir /= 4.0f;
+                    float rotDir = Input.GetKey(keyConfig.CameraLEFT) ? -2.0f : 2.0f;
+                    if (Input.GetKey(keyConfig.CameraAimRotate)) rotDir /= 4.0f;
                     cameraHolder.transform.Rotate(0, rotDir, 0);
                 }
             }
 
-            if (Input.GetKey(GetComponent<PlayerControl>().CameraUP) || Input.GetKey(GetComponent<PlayerControl>().CameraDOWN))
+            if (Input.GetKey(keyConfig.CameraUP) || Input.GetKey(keyConfig.CameraDOWN))
             {
                 float cameraPosition = mainCamera.gameObject.transform.localPosition.y;
-                if (Input.GetKey(GetComponent<PlayerControl>().CameraUP) && cameraPosition > 1.0f)
+                if (Input.GetKey(keyConfig.CameraUP) && cameraPosition > 1.0f)
                 {
                     mainCamera.gameObject.transform.localPosition -= new Vector3(0, 0.25f, 0);
                     mainCamera.gameObject.transform.localEulerAngles -= new Vector3(3.0f, 0, 0);
                 }
-                else if (Input.GetKey(GetComponent<PlayerControl>().CameraDOWN) && cameraPosition < 6.0f)
+                else if (Input.GetKey(keyConfig.CameraDOWN) && cameraPosition < 6.0f)
                 {
                     mainCamera.gameObject.transform.localPosition += new Vector3(0, 0.25f, 0);
                     mainCamera.gameObject.transform.localEulerAngles += new Vector3(3.0f, 0, 0);
                 }
             }
 
-            if (Input.GetKey(GetComponent<PlayerControl>().CameraZoomIn) || Input.GetKey(GetComponent<PlayerControl>().CameraZoomOut))
+            if (Input.GetKey(keyConfig.CameraZoomIn) || Input.GetKey(keyConfig.CameraZoomOut))
             {
                 float cameraZoom = mainCamera.gameObject.transform.localPosition.z;
-                if (Input.GetKey(GetComponent<PlayerControl>().CameraZoomIn) && cameraZoom < -2.5f)
+                if (Input.GetKey(keyConfig.CameraZoomIn) && cameraZoom < -2.5f)
                     mainCamera.gameObject.transform.localPosition += new Vector3(0, 0, 0.1f);
-                else if (Input.GetKey(GetComponent<PlayerControl>().CameraZoomOut) && cameraZoom > -7.5f)
+                else if (Input.GetKey(keyConfig.CameraZoomOut) && cameraZoom > -7.5f)
                     mainCamera.gameObject.transform.localPosition -= new Vector3(0, 0, 0.1f);
             }
         }

@@ -9,6 +9,8 @@ namespace GameCore.GameMenu
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private GameObject keyConfig;
+
         private KeyCode UP = KeyCode.UpArrow;
         private KeyCode DOWN = KeyCode.DownArrow;
         private KeyCode SPACE = KeyCode.Space;
@@ -18,6 +20,7 @@ namespace GameCore.GameMenu
 
         void Start()
         {
+            keyConfig.SetActive(false);
             currentSelectedIndex = 0;
             newSelectedIndex = 0;
             selectNewIndex(true);
@@ -44,6 +47,10 @@ namespace GameCore.GameMenu
                 {
                     case "PLAY":
                         SceneManager.LoadScene("GameScene");
+                        break;
+                    case "KEY CONFIG":
+                        keyConfig.SetActive(true);
+                        gameObject.SetActive(false);
                         break;
                     case "QUIT":
                         //if (Application.isEditor)
